@@ -42,9 +42,61 @@ while (keepOpen)
     }
 
 }
-void Calculator() 
+void Calculator()
 {
-    Console.WriteLine("Input two numbers and the operation that you want to do! (Example input: 2 + 2)");
-    var calculation = Console.ReadLine();
+    Console.WriteLine("Enter calculation (example: 2+2):");
+    var input = Console.ReadLine().Replace(" ", "");
+
+    char[] operators = { '+', '-', '*', '/' };
+    char op = input.FirstOrDefault(c => operators.Contains(c));
+
+    if (op == '\0')
+    {
+        Console.WriteLine("No valid operator found.");
+        return;
+    }
+
+    var parts = input.Split(op);
+
+    if (parts.Length != 2 ||
+        !double.TryParse(parts[0], out double a) ||
+        !double.TryParse(parts[1], out double b))
+    {
+        Console.WriteLine("Invalid input.");
+        return;
+    }
+
+    double result;
+
+    switch (op)
+    {
+        case '+':
+            result = a + b;
+            break;
+
+        case '-':
+            result = a - b;
+            break;
+
+        case '*':
+            result = a * b;
+            break;
+
+        case '/':
+            if (b == 0)
+            {
+                Console.WriteLine("Division by zero is not allowed.");
+                return;
+            }
+            result = a / b;
+            break;
+
+        default:
+            Console.WriteLine("Unknown operator.");
+            return;
+    }
+
+    Console.WriteLine($"Result: {result:F2}");
 }
+
 
