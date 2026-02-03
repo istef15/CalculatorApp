@@ -7,8 +7,13 @@
  6. Give option to return to ask to input numbers step or quit
  */
 
+using System.Xml.Linq;
+using static System.Formats.Asn1.AsnWriter;
+
 Console.WriteLine("Write Username: ");
 var username = Console.ReadLine();
+
+List<CalculationHistory> history = new List<CalculationHistory>();
 
 var menu = @$"Hi! Welcome to the Calculator App, {username}!
 
@@ -33,7 +38,7 @@ while (keepOpen)
     {
         case "1": Calculator();
         break;
-        case "2": Console.WriteLine("Calculation History selected");
+        case "2": ShowHistory();
         break;
         case "Q":
         case "q": Console.WriteLine("Thank you for playing! Goodbye!");
@@ -98,6 +103,13 @@ void Calculator()
 
         Console.WriteLine($"Result: {result:F2}. \nPress any key to start new calculation or press 'R' to return to menu");
 
+    history.Add(new CalculationHistory
+    {
+        Username = username,
+        Timestamp = DateTime.Now,
+        Result = result
+    });
+
     var keepPlaying = Console.ReadLine();
     if (keepPlaying == "R" || keepPlaying == "r")
     {
@@ -110,3 +122,36 @@ void Calculator()
 }
 
 
+void ShowHistory()
+{
+    Console.Clear();
+    Console.WriteLine("--- Calculation History ---\n");
+
+        if (history.Count == 0)
+    {
+        Console.WriteLine("No calculation done yet.");
+    }
+    else
+    {
+        foreach (var record in history)
+        {
+            Console.WriteLine(record.ToString());
+        }
+    }
+
+    Console.WriteLine("\nPress any key to return to menu.");
+    Console.ReadLine();
+}
+
+class CalculationHistory
+{
+    public string Username { get; set; }
+    public DateTime Timestamp { get; set; }
+    public double Result { get; set; }
+
+    public override string ToString()
+    {
+        return $"{Timestamp:yyyy-MM-dd HH:mm:ss} | {Username} | {Result}";
+    }
+
+}
