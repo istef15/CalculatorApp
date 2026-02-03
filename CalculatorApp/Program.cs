@@ -50,53 +50,63 @@ void Calculator()
     char[] operators = { '+', '-', '*', '/' };
     char op = input.FirstOrDefault(c => operators.Contains(c));
 
-    if (op == '\0')
-    {
-        Console.WriteLine("No valid operator found.");
-        return;
-    }
-
-    var parts = input.Split(op);
-
-    if (parts.Length != 2 ||
-        !double.TryParse(parts[0], out double a) ||
-        !double.TryParse(parts[1], out double b))
-    {
-        Console.WriteLine("Invalid input.");
-        return;
-    }
-
-    double result;
-
-    switch (op)
-    {
-        case '+':
-            result = a + b;
-            break;
-
-        case '-':
-            result = a - b;
-            break;
-
-        case '*':
-            result = a * b;
-            break;
-
-        case '/':
-            if (b == 0)
-            {
-                Console.WriteLine("Division by zero is not allowed.");
-                return;
-            }
-            result = a / b;
-            break;
-
-        default:
-            Console.WriteLine("Unknown operator.");
+        if (op == '\0')
+        {
+            Console.WriteLine("No valid operator found.");
             return;
+        }
+
+        var parts = input.Split(op);
+
+        if (parts.Length != 2 ||
+            !double.TryParse(parts[0], out double a) ||
+            !double.TryParse(parts[1], out double b))
+        {
+            Console.WriteLine("Invalid input.");
+            return;
+        }
+
+        double result;
+
+        switch (op)
+        {
+            case '+':
+                result = a + b;
+                break;
+
+            case '-':
+                result = a - b;
+                break;
+
+            case '*':
+                result = a * b;
+                break;
+
+            case '/':
+                if (b == 0)
+                {
+                    Console.WriteLine("Division by zero is not allowed.");
+                    return;
+                }
+                result = a / b;
+                break;
+
+            default:
+                Console.WriteLine("Unknown operator.");
+                return;
+        }
+
+        Console.WriteLine($"Result: {result:F2}. \nPress any key to start new calculation or press 'R' to return to menu");
+
+    var keepPlaying = Console.ReadLine();
+    if (keepPlaying == "R" || keepPlaying == "r")
+    {
+        return;
     }
 
-    Console.WriteLine($"Result: {result:F2}");
+    else Console.Clear(); Calculator();
+        
+   
 }
 
 
